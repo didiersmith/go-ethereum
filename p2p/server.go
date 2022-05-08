@@ -42,12 +42,12 @@ import (
 )
 
 const (
-	defaultDialTimeout = 15 * time.Second
+	defaultDialTimeout = 5 * time.Second
 
 	// This is the fairness knob for the discovery mixer. When looking for peers, we'll
 	// wait this long for a single source of candidates before moving on and trying other
 	// sources.
-	discmixTimeout = 5 * time.Second
+	discmixTimeout = 50 * time.Millisecond
 
 	// Connectivity defaults.
 	defaultMaxPendingPeers = 50
@@ -62,6 +62,9 @@ const (
 
 	// Maximum amount of time allowed for writing a complete message.
 	frameWriteTimeout = 20 * time.Second
+
+	// Dexter
+	numDialers = 100
 )
 
 var errServerStopped = errors.New("server stopped")
@@ -601,7 +604,9 @@ func (srv *Server) setupDiscovery() error {
 			return err
 		}
 		srv.ntab = ntab
-		srv.discmix.AddSource(ntab.RandomNodes())
+		for i := 0; i < numDialers; i++ {
+			srv.discmix.AddSource(ntab.RandomNodes())
+		}
 	}
 
 	// Discovery V5

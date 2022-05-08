@@ -40,12 +40,12 @@ const (
 	dialHistoryExpiration = inboundThrottleTime + 5*time.Second
 
 	// Config for the "Looking for peers" message.
-	dialStatsLogInterval = 120 * time.Second // printed at most this often
-	dialStatsPeerLimit   = 2                 // but not if more than this many dialed peers
+	dialStatsLogInterval = 20 * time.Second // printed at most this often
+	dialStatsPeerLimit   = 1000             // but not if more than this many dialed peers
 
 	// Endpoint resolution is throttled with bounded backoff.
 	initialResolveDelay = 60 * time.Second
-	maxResolveDelay     = time.Hour
+	maxResolveDelay     = 5 * time.Minute // time.Hour
 )
 
 // NodeDialer is used to connect to nodes in the network, typically by using
@@ -337,7 +337,7 @@ func (d *dialScheduler) logStats() {
 		return
 	}
 	if d.dialPeers < dialStatsPeerLimit && d.dialPeers < d.maxDialPeers {
-		d.log.Info("Looking for peers", "peercount", len(d.peers), "tried", d.doneSinceLastLog, "static", len(d.static))
+		d.log.Info("Looking for peers", "peercount", len(d.peers), "tried", d.doneSinceLastLog, "rate", d.doneSinceLastLog/int(dialStatsLogInterval/time.Second), "static", len(d.static), "dialing", len(d.dialing), "slots", d.freeDialSlots())
 	}
 	d.doneSinceLastLog = 0
 	d.lastStatsLog = now
