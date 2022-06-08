@@ -40,8 +40,8 @@ const (
 	dialHistoryExpiration = inboundThrottleTime + 5*time.Second
 
 	// Config for the "Looking for peers" message.
-	dialStatsLogInterval = 20 * time.Second // printed at most this often
-	dialStatsPeerLimit   = 1000             // but not if more than this many dialed peers
+	dialStatsLogInterval = 120 * time.Second // printed at most this often
+	dialStatsPeerLimit   = 100               // but not if more than this many dialed peers
 
 	// Endpoint resolution is throttled with bounded backoff.
 	initialResolveDelay = 60 * time.Second
