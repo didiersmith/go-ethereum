@@ -143,6 +143,14 @@ func (p *Peer) ID() enode.ID {
 	return p.rw.node.ID()
 }
 
+func (p *Peer) IsStatic() bool {
+	return p.rw.is(staticDialedConn)
+}
+
+func (p *Peer) IsTrusted() bool {
+	return p.rw.is(trustedConn)
+}
+
 // Node returns the peer's node descriptor.
 func (p *Peer) Node() *enode.Node {
 	return p.rw.node

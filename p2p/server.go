@@ -64,7 +64,7 @@ const (
 	frameWriteTimeout = 20 * time.Second
 
 	// Dexter
-	numDialers = 100
+	numDialers = 25
 )
 
 var errServerStopped = errors.New("server stopped")
@@ -604,7 +604,7 @@ func (srv *Server) setupDiscovery() error {
 			return err
 		}
 		srv.ntab = ntab
-		for i := 0; i < numDialers; i++ {
+		for i := 0; i < srv.MaxPeers/10; i++ {
 			srv.discmix.AddSource(ntab.RandomNodes())
 		}
 	}
