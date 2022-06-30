@@ -604,7 +604,7 @@ func (srv *Server) setupDiscovery() error {
 			return err
 		}
 		srv.ntab = ntab
-		for i := 0; i < srv.MaxPeers/10; i++ {
+		for i := 0; i < srv.MaxPeers/4; i++ {
 			srv.discmix.AddSource(ntab.RandomNodes())
 		}
 	}
